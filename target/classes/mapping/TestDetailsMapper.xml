@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxy.javatest.dao.TestDetailsMapper" >
+  <resultMap id="BaseResultMap" type="cn.jxy.javatest.entity.TestDetails" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="res_id" property="resId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="qt_id" property="qtId" jdbcType="INTEGER" />
+    <result column="qt_name" property="qtName" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="INTEGER" />
+    <result column="memory" property="memory" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, res_id, order_id, qt_id, qt_name, user_id, user_name, result, score, time, memory
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_testdetails
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getByRseId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_testdetails
+    where res_id = #{resid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_testdetails
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.jxy.javatest.entity.TestDetails" >
+    insert into tb_testdetails (id, res_id, order_id, 
+      qt_id, qt_name, user_id, 
+      user_name, result, score, 
+      time, memory)
+    values (#{id,jdbcType=INTEGER}, #{resId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, 
+      #{qtId,jdbcType=INTEGER}, #{qtName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{userName,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, 
+      #{time,jdbcType=INTEGER}, #{memory,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.jxy.javatest.entity.TestDetails" >
+    insert into tb_testdetails
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="resId != null" >
+        res_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="qtId != null" >
+        qt_id,
+      </if>
+      <if test="qtName != null" >
+        qt_name,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="memory != null" >
+        memory,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="resId != null" >
+        #{resId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="qtId != null" >
+        #{qtId,jdbcType=INTEGER},
+      </if>
+      <if test="qtName != null" >
+        #{qtName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=INTEGER},
+      </if>
+      <if test="memory != null" >
+        #{memory,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jxy.javatest.entity.TestDetails" >
+    update tb_testdetails
+    <set >
+      <if test="resId != null" >
+        res_id = #{resId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="qtId != null" >
+        qt_id = #{qtId,jdbcType=INTEGER},
+      </if>
+      <if test="qtName != null" >
+        qt_name = #{qtName,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=INTEGER},
+      </if>
+      <if test="memory != null" >
+        memory = #{memory,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jxy.javatest.entity.TestDetails" >
+    update tb_testdetails
+    set res_id = #{resId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=INTEGER},
+      qt_id = #{qtId,jdbcType=INTEGER},
+      qt_name = #{qtName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      time = #{time,jdbcType=INTEGER},
+      memory = #{memory,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

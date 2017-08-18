@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jxy.javatest.dao.QuestionMapper" >
+  <resultMap id="BaseResultMap" type="cn.jxy.javatest.entity.Question" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, content, type_id, type, keyword, create_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_question
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="getNumByTypeId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+  	select count(*)
+  	 from tb_question
+    where type_id = #{typeid,jdbcType=INTEGER}
+  </select>
+  <select id="selectByTypeId"  resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select 
+    <include refid="Base_Column_List" />
+    from tb_question
+    where type_id = #{typeid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_question
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.jxy.javatest.entity.Question" >
+    insert into tb_question (id, name, content, 
+      type_id, type, keyword, 
+      create_date)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.jxy.javatest.entity.Question" >
+    insert into tb_question
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jxy.javatest.entity.Question" >
+    update tb_question
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jxy.javatest.entity.Question" >
+    update tb_question
+    set name = #{name,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      type_id = #{typeId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
