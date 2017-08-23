@@ -38,4 +38,13 @@ public interface IResponseService {
 	//根据userId查询
 	public List<Response> getByUserId(int userId);
 	
+	//根据userId和raceId查询
+	public List<Response> getByUserIdAndRaceId(int userId,int raceId);
+	
+	//根据userId、raceId和qtId查询
+	public Response getByUserRaceQt(int userId,int raceId,int qtId);
+	
+	//根据userId、raceId和qtId查询
+	public List<Response> getAllByUserRaceQt(int userId,int raceId,int qtId);
+	
 }

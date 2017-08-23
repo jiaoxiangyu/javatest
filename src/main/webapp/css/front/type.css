@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+.cont{
+	width:85%;
+	padding-left: 20%;
+	padding-top: 2%;
+	min-height:78%;	
+}
+
+.back{
+	font-size: 20px;
+}

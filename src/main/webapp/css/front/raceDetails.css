@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+
+.cont{
+	width:80%;
+	text-align:center;
+	padding-left: 20%;
+	padding-top: 2%;
+	min-height:78%;	
+}
+
+.title{
+	color: green;
+	font-size: 20px;
+	font-weight: bolder;
+	letter-spacing:2px;
+}
+
+.back{
+	float:left;
+	font-size: 20px;	
+}

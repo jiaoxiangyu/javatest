@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.omg.CORBA.Request;
 
 import cn.jxy.javatest.service.IQuestionService;
+import cn.jxy.javatest.service.IRaceDetailsService;
+import cn.jxy.javatest.service.IRaceService;
 import cn.jxy.javatest.service.IResponseService;
 import cn.jxy.javatest.service.ITestDetailsService;
 import cn.jxy.javatest.service.ITypeService;
@@ -34,5 +36,11 @@ public class BaseController {
 	
 	@Resource 
 	protected IUserService userService;
+	
+	@Resource 
+	protected IRaceService raceService;
+	
+	@Resource 
+	protected IRaceDetailsService raceDetailsService;
 	
 }

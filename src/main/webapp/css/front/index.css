@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+.cont{
+	width:80%;	
+	padding-left: 20%;
+	padding-top: 2%;
+	min-height:78%;	
+}
+.cont pre{
+	/* height: 65%; */
+	line-height:1.5;
+	font-size: 16px;
+	margin-bottom: 20px;
+	 word-wrap: break-word;
+	  white-space:pre-wrap;
+}
+.cont pre h3{
+	text-align: center;
+}

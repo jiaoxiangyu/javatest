@@ -1,0 +1,83 @@
+@CHARSET "UTF-8";
+
+body{
+	background-color: #f8f8f8;
+}
+
+.border{	
+	margin-top: 12% ;		
+	text-align:center;
+	width: 400px;
+	
+	
+}
+
+.title2{
+	height: 50px;	
+	font-size: 20px;
+	font-weight: bolder;
+	padding-top:0px;
+	padding-left: 0px;	
+	padding-right: 0px;
+}
+
+.title2 ul li{	
+	width: 184px;
+	text-align: center;
+}
+
+.title2 ul li a{
+	
+	margin-right: 0px;
+
+}
+
+.body2{
+	padding-top: 30px;
+	padding-left: 45px;
+	padding-right: 45px;
+}
+.login{
+	clear: both;
+}
+.login input{
+	
+	padding-left: 49px;
+	padding-right: 49px;
+}
+
+.body3{
+	padding-top: 30px;
+	padding-left: 55px;
+	padding-right: 55px;
+}
+.login2 input{	
+	padding-left: 49px;
+	padding-right: 49px; 
+}
+
+.code img{
+	width: 80px;
+	height: 24px;
+}
+
+.code2 img{
+	width: 70px;
+	height: 18px; 
+}
+
+.remember{
+	
+	
+}
+
+.remember2{	
+	float: left;
+	margin-top:-10px;
+	padding-left: 24px;
+}
+.forget{
+	margin-top:-10px;
+	float: right;
+	
+}

@@ -33,44 +33,7 @@ function G(objid){
   <tr> 
     <td width="55%"> 
     <div id="ol"><textarea cols="2" rows="10" id="li" disabled></textarea></div> 
-    <textarea disabled="disabled" name="co" cols="60" rows="10" wrap="off" id="c2"  onblur="check('2')" onKeyUp="keyUp()" onFocus="clearValue('2')" onscroll="G('li').scrollTop=this.scrollTop;" oncontextmenu="return false"  class="grey">
-    
-import java.util.Date;
-import java.util.Scanner;
-
-/**
- * @author Administrator
- *
- */
-public class 字符串对比 {
-	 public static void main(String[] args) {  
-		
-	        Scanner scanner = new Scanner(System.in);  
-	  
-	        while (scanner.hasNext()) {  
-	            String s1 = scanner.nextLine();  
-	            String s2 = scanner.nextLine();  
-	  
-	            int result;  
-	            if (s1.length() != s2.length()) {  
-	                result = 1;  
-	            } else {  
-	                if (s1.equals(s2)) {  
-	                    result = 2;  
-	                } else if (s1.toLowerCase().equals(s2.toLowerCase())) {  
-	                    result = 3;  
-	                } else {  
-	                    result = 4;  
-	                }  
-	            }  
-	  
-	            System.out.println(result);  
-	          
-	        } 
-	       
-	    }  
-}		
-	</textarea>     
+    <textarea disabled="disabled" name="co" cols="60" rows="10" wrap="off" id="c2"  onblur="check('2')" onKeyUp="keyUp()" onFocus="clearValue('2')" onscroll="G('li').scrollTop=this.scrollTop;" oncontextmenu="return false"  class="grey"></textarea>     
     </td> 
     </tr> 
 </table> 

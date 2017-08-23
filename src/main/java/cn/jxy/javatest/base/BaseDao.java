@@ -28,11 +28,11 @@ public class BaseDao<T , PK extends Serializable> extends SqlSessionDaoSupport
 	
     private final String SUFFIX = "Mapper"; //后缀  
     
-    private final String _INSERT = ".insert";  //添加
+    private final String _INSERT = ".insertSelective";  //添加
     
     private final String _SELECTBYPRIMARYKEY = ".selectByPrimaryKey";  
   
-    private final String _UPDATEBYPRIMARYKEY = ".updateByPrimaryKey";  
+    private final String _UPDATEBYPRIMARYKEY = ".updateByPrimaryKeySelective";  
     
     private final String _DELETEBYPRIMARYKEY = ".deleteByPrimaryKey";
 

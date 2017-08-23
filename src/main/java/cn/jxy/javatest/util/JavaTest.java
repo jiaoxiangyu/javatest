@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,12 +44,10 @@ public class JavaTest {
 	
 	//读取测试输入内容
 	public void input(int i) throws IOException{	
-		System.out.println("开始输入测试数据");
 		char[] c=new char[1024];
 		FileReader fr=new FileReader(testFilePath+name+"-"+"input"+"-"+i+".txt");
 		int len=fr.read(c);	
 		BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(System.out));
-		System.out.println("输入测试数据："+new String(c,0,len));
 		bw.write(c,0,len);			
 	}
 	
@@ -122,30 +121,21 @@ public class JavaTest {
 				fout.close();							
 				System.setOut(out);
 				//**时间和内存
-				System.out.println("time="+(new Date().getTime()-startTime));
 				testDetails.setTime((new Long(new Date().getTime()-startTime)).intValue());				
-				System.out.println("memory="+(memory-Runtime.getRuntime().freeMemory() / 1024 / 1024)+ "M");
 				testDetails.setMemory((new Long(memory-Runtime.getRuntime().freeMemory() / 1024 / 1024)).intValue());
 				
-								
-						
 				String answer1=reader();
 				String answer2=output(i);
 				answer1=answer1.substring(0, answer1.length()-2);
 				answer2=answer2.substring(0, answer2.length()-1);	
-				System.out.println("a1="+answer1);
-				System.out.println("a2="+answer2);
 				if(answer1.equals(answer2)){
 					testDetails.setResult("正确");
 					testDetails.setScore(100/count);
-					System.out.println("第"+i+"次测试正确");
 				}else{
 					testDetails.setResult("错误");
 					testDetails.setScore(0);
-					System.out.println("第"+i+"次测试正确答案："+answer2);
 					
 				}
-				//System.gc();
 				testDetailss.add(testDetails);
 			}else{
 				break;
@@ -162,10 +152,10 @@ public class JavaTest {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		/*List<TestDetails> testDetails=new ArrayList<TestDetails>();
- 		JavaTest t=new JavaTest(Class.forName("cn.jxy.javatest.test.user.字符串对比"), "G:\\workspace\\javatest","user");
+		List<TestDetails> testDetails=new ArrayList<TestDetails>();
+ 		JavaTest t=new JavaTest(Class.forName("cn.jxy.javatest.test.username.字符串对比"), "G:\\workspace\\javatest","user");
  		System.out.println(t.compare(testDetails));
- 		*/
+ 		
  		
  		
 	}

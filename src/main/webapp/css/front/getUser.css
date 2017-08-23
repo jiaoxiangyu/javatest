@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+.cont{
+	width:65%;	
+	padding-left: 30%;
+	padding-top: 2%;
+	min-height:78%;	
+}
+
+.panel-heading2{
+	text-align: center;
+	font-size: 18px;
+	font-weight: bolder;
+	color: green;
+}
+
+.panel-body2 {
+	margin-top:2%;
+	margin-left:10%;
+	margin-right:10%;
+}
+
+.submit input{
+	padding-left:20%;
+	padding-right:20%;
+	margin-left:24%;
+	margin-right:24%; 
+}
+
+.panel-body2 h4{
+	text-align: center;
+	color: red;
+}

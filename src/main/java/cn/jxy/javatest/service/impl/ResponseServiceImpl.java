@@ -101,4 +101,22 @@ public class ResponseServiceImpl extends BaseDao<Response, Serializable> impleme
 		return responseDao.getByUserIdAndQtId(userId, qtId);
 	}
 
+	@Override
+	public List<Response> getByUserIdAndRaceId(int userId, int raceId) {
+		
+		return responseDao.getByUserIdAndRaceId(userId, raceId);
+	}
+
+	@Override
+	public Response getByUserRaceQt(int userId, int raceId, int qtId) {
+		
+		return responseDao.getByUserRaceQt(userId, raceId, qtId);
+	}
+
+	@Override
+	public List<Response> getAllByUserRaceQt(int userId, int raceId, int qtId) {
+		
+		return responseDao.getAllByUserRaceQt(userId, raceId, qtId);
+	}
+
 }

@@ -5,8 +5,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,9 +21,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.jxy.javatest.base.BaseController;
 import cn.jxy.javatest.entity.Question;
+import cn.jxy.javatest.entity.Race;
+import cn.jxy.javatest.entity.RaceDetails;
 import cn.jxy.javatest.entity.Response;
 import cn.jxy.javatest.entity.TestDetails;
 import cn.jxy.javatest.entity.Type;
@@ -40,13 +45,25 @@ import cn.jxy.javatest.util.PageCut;
 @RequestMapping("/front")
 public class FrontController extends BaseController{
 	/**
-	 * 首页 -- 获得所有试题集
+	 * 首页
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="/index",method=RequestMethod.GET)
+	public String index(ModelMap model,HttpSession session){
+		
+		return "front/index";
+	}
+	
+	/**
+	 * 试题集 -- 获得所有试题集
 	 * @param model
 	 * @param session
 	 * @return front index.jsp (include questionType)
 	 */
-	@RequestMapping(value="/index",method=RequestMethod.GET)
-	public String index(ModelMap model,HttpSession session){
+	@RequestMapping(value="/questionType",method=RequestMethod.GET)
+	public String toQuestionType(ModelMap model,HttpSession session){
 		User user=(User)session.getAttribute("user");
 		//获得试题集
 		PageCut<Type> p=typeService.getPage(0, 0);
@@ -67,6 +84,7 @@ public class FrontController extends BaseController{
 		
 		return "front/questionType";
 	}
+	
 	/**
 	 * 进入试题集
 	 * @param model
@@ -74,7 +92,7 @@ public class FrontController extends BaseController{
 	 * @return front/toType.jsp
 	 */
 	@RequestMapping(value="/toType",method=RequestMethod.GET)
-	public String toTye(ModelMap model,HttpSession session,int typeId){
+	public String toType(ModelMap model,HttpSession session,int typeId){
 		int userId=((User)session.getAttribute("user")).getId();
 		PageCut<Question> p=questionService.getPage(0, 0, typeId);
 		if(p!=null){
@@ -102,7 +120,10 @@ public class FrontController extends BaseController{
 	 * @return front/toQuestion.jsp
 	 */
 	@RequestMapping(value="/toQuestion",method=RequestMethod.GET)
-	public String toQuestion(ModelMap model,int qtId){
+	public String toQuestion(HttpSession session,ModelMap model,int qtId,@RequestParam(value="raceId",defaultValue="0")int raceId){
+		if(raceId!=0){			
+			session.setAttribute("raceId", raceId);
+		}
 		Question question=questionService.get(qtId);
 		model.addAttribute("question", question);
 		return "front/question";
@@ -118,12 +139,19 @@ public class FrontController extends BaseController{
 	@RequestMapping(value="/toSubmit",method=RequestMethod.POST)
 	public String toSubmit(HttpServletRequest request,HttpSession session,ModelMap model,int qtId,String answer)
 	throws Exception{
+		
 		Question question=questionService.get(qtId);
 		User user=(User)session.getAttribute("user");
 		/**
 		 * 生成Response类,并先存入数据库
 		 */
 		Response response=new Response(question.getId(), question.getName(), user.getId(), user.getUsername(), question.getTypeId(), question.getType(), "已打开", new DateSwitch().toString());
+		int raceId=(int)session.getAttribute("raceId");
+		if(raceId!=0){
+			Race race=raceService.get(raceId);
+			response.setRaceId(raceId);
+			response.setRaceName(race.getName());
+		}
 		boolean resadd=responseService.add(response);
 		if(resadd==true){
 			response=responseService.getForResId(user.getId(), question.getId());
@@ -147,7 +175,7 @@ public class FrontController extends BaseController{
 		//生成java文件
 		File javaFile=new File(folder.getPath()+"\\"+question.getName()+".java"); 		
 		FileWriter fout=new FileWriter(javaFile);
-		fout.write("package cn.jxy.javatest.test."+user.getUsername()+";");
+		fout.write("package cn.jxy.javatest.test."+user.getUsername()+";"+"\r\n");
 		fout.write(answer);
  		fout.close();
  		
@@ -169,7 +197,13 @@ public class FrontController extends BaseController{
  		foutErr.close();
  		System.setErr(errOut);
  		
- 		if(result!=0){//读取错误想 信息 			
+ 		if(result!=0){	
+ 			//删除生成的错误java文件
+ 			if(javaFile.exists()){
+ 				javaFile.delete();
+ 			}
+ 			
+ 			//读取错误想信息 
  	 		char[] c=new char[1024];			
  			FileReader fr=new FileReader(file);
  			int len=fr.read(c);	
@@ -180,10 +214,10 @@ public class FrontController extends BaseController{
  				response.setScore(0);
  				response.setStatus("编译错误");
  				response.setAnswer(answer);
+ 				response.setErr(err);
  				responseService.update(response);
  												
  				model.addAttribute("response", response);
- 				model.addAttribute("err", err);
  				return "front/testDetails";
  			}
  		}	
@@ -208,7 +242,8 @@ public class FrontController extends BaseController{
 			response.setStatus("正确");
 		}else{
 			response.setStatus("错误");
-		}
+		}		
+		response.setAnswer(answer);
 		responseService.update(response);
 		model.addAttribute("response", response);
 		model.addAttribute("testDetailss", testDetailss);
@@ -223,9 +258,14 @@ public class FrontController extends BaseController{
 	 * @return front/testHistory.jsp
 	 */
 	@RequestMapping(value="/submitHistory",method=RequestMethod.GET)
-	public String submitHistory(HttpSession session,ModelMap model,int qtId){
+	public String submitHistory(HttpSession session,ModelMap model,int qtId,@RequestParam(value="raceId",defaultValue="0")int raceId){
 		User user=(User)session.getAttribute("user");
-		List<Response> responses=responseService.getByUserIdAndQtId(user.getId(), qtId);
+		List<Response> responses=null;
+		if(raceId!=0){
+			responses=responseService.getAllByUserRaceQt(user.getId(), raceId, qtId);
+		}else{
+			responses=responseService.getByUserIdAndQtId(user.getId(), qtId);
+		}		
 		model.addAttribute("responses", responses);
 		return "front/testHistory";
 	}
@@ -290,4 +330,104 @@ public class FrontController extends BaseController{
 		fReader.close();
 		out.close();		
 	}
+	/**
+	 * java在线工具  暂时屏蔽
+	 * @return
+	 */
+	/*@RequestMapping(value="/compile",method=RequestMethod.GET)
+	public String compile(){
+		return "front/compile";
+	}*/
+	
+	/**
+	 * 算法竞赛
+	 * @param model
+	 * @return front/race.jsp
+	 */
+	@RequestMapping(value="/race",method=RequestMethod.GET)
+	public String race(ModelMap model,HttpSession session){
+		int userId=((User)session.getAttribute("user")).getId();
+		
+		List<Race> races=raceService.getPage(0, 0).getData();
+		int score;
+		for(Race r:races){
+			score=0;
+			Date startDate=DateSwitch.StrToDateTime(r.getStartDate());
+			Date endDate=DateSwitch.StrToDateTime(r.getEndDate());
+			if(startDate.after(new Date())){
+				r.setJoin("未开始");
+			}else if(endDate.after(new Date())){
+				r.setJoin("竞赛中");
+			}else{
+				List<Response> responsess=responseService.getByUserIdAndRaceId(userId, r.getId());
+				if(responsess.size()>0){
+					for(Response res:responsess){
+						score=score+res.getScore();
+					}
+					r.setJoin("已参加");
+				}else{
+					r.setJoin("未参加");
+				}
+				r.setScore(score);
+			}		
+		}
+		model.addAttribute("races",races);
+		return "front/race";
+	}
+	
+	/**
+	 * 竞赛详情
+	 * @param session
+	 * @param model
+	 * @param raceId
+	 * @return front/raceDetails.jsp
+	 */
+	@RequestMapping(value="/raceDetails",method=RequestMethod.GET)
+	public String raceDetails(HttpSession session,ModelMap model,int raceId){
+		int userId=((User)session.getAttribute("user")).getId();
+		List<RaceDetails> raceDetailss=raceDetailsService.getByRaceId(raceId);
+		if(raceDetailss.size()>0){
+			for(RaceDetails r:raceDetailss){
+				Response res=responseService.getByUserRaceQt(userId, raceId, r.getQtId());
+				r.setStatus(res.getStatus());
+				r.setScore(res.getScore());
+				r.setWriteTime(res.getWriteDate());
+			}
+			model.addAttribute("raceDetailss",raceDetailss);			
+		}else{
+			model.addAttribute("msg","该竞赛内容为空");
+		}		
+		return "front/raceDetails";
+	}
+	
+	/**
+	 * 用户个人信息
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/getUser",method=RequestMethod.GET)
+	public String getUser(HttpSession session,ModelMap model){		
+		return "front/getUser";
+	}
+	
+	
+	@RequestMapping(value="/update",method=RequestMethod.POST)
+	public String update(HttpSession session,User user,ModelMap model) throws Exception{	
+		int userId=((User)session.getAttribute("user")).getId();
+		user.setId(userId);
+		String name=new String(user.getName().getBytes("ISO-8859-1"),"UTF-8");
+		user.setName(name);
+		boolean bool=userService.update(user);
+		if(bool==true){
+			user=userService.get(userId);			
+			model.addAttribute("user",user);
+			model.addAttribute("msg","修改成功");
+		}else{
+			model.addAttribute("msg","修改失败");
+		}
+		return "front/getUser";
+	}
+	
+	
 }

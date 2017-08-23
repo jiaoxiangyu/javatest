@@ -33,8 +33,15 @@ public class Response {
     private Integer memory;//程序使用内存大小
 
     private String writeDate;//回答时间
-
     
+	/**
+	 * 后加属性
+	 * */
+    private int raceId;//比赛id
+    
+    private String raceName;//比赛名称
+    
+    private String err;//错误信息
     
     /**
 	 * 
@@ -185,11 +192,66 @@ public class Response {
     public void setWriteDate(String writeDate) {
         this.writeDate = writeDate;
     }
-    @Override
+    
+    /**
+	 * @return the raceId
+	 */
+	public int getRaceId() {
+		return raceId;
+	}
+
+
+
+	/**
+	 * @param raceId the raceId to set
+	 */
+	public void setRaceId(int raceId) {
+		this.raceId = raceId;
+	}
+
+
+
+	/**
+	 * @return the raceName
+	 */
+	public String getRaceName() {
+		return raceName;
+	}
+
+
+
+	/**
+	 * @param raceName the raceName to set
+	 */
+	public void setRaceName(String raceName) {
+		this.raceName = raceName;
+	}
+
+
+
+	/**
+	 * @return the err
+	 */
+	public String getErr() {
+		return err;
+	}
+
+
+
+	/**
+	 * @param err the err to set
+	 */
+	public void setErr(String err) {
+		this.err = err;
+	}
+
+
+
+	@Override
 	public String toString() {
 		return "Response [id=" + id + ", qtId=" + qtId + ", qtName=" + qtName + ", userId=" + userId + ", userName="
-				+ userName + ", typeId=" + typeId + ", typeName=" + typeName + ", answer=" + answer + ", status="
+				+ userName + ", typeId=" + typeId + ", typeName=" + typeName + ", answer.len=" + answer.length() + ", status="
 				+ status + ", score=" + score + ", time=" + time + ", memory=" + memory + ", writeDate=" + writeDate
-				+ "]";
+				+ ", raceId=" + raceId + ", raceName=" + raceName + ", err=" + err + "]";
 	}
 }

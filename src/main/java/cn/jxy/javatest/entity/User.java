@@ -1,6 +1,5 @@
 package cn.jxy.javatest.entity;
 
-import java.util.Date;
 /**
  * 
  * @author 焦
@@ -11,7 +10,7 @@ import java.util.Date;
 public class User {
     private Integer id;
 
-    private String username;
+    private String username;//用户名
 
     private String password;
 
@@ -19,6 +18,14 @@ public class User {
 
     private String createDate;
 
+    private String name;//昵称
+
+    private String email;
+    
+    private String phone;
+
+    private Integer register;//是否通过注册（0、1）
+    
     public Integer getId() {
         return id;
     }
@@ -71,10 +78,67 @@ public class User {
         this.createDate = createDate;
     }
 
+    
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @return the register
+	 */
+	public Integer getRegister() {
+		return register;
+	}
+
+	/**
+	 * @param register the register to set
+	 */
+	public void setRegister(Integer register) {
+		this.register = register;
+	}
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", type=" + type
-				+ ", createDate=" + createDate + "]";
+				+ ", createDate=" + createDate + ", name=" + name + ", email=" + email + ", phone=" + phone
+				+ ", register=" + register + "]";
 	}
     
 }

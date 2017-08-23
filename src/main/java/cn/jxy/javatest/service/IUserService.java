@@ -16,11 +16,15 @@ public interface IUserService {
 	
 	public boolean add(User user);
 	
-	public boolean delete(User user);
+	public boolean delete(int userId);
 	
 	public boolean update(User user);
 	
 	public User get(int userId);
 	
 	public PageCut<User> getPage(int pageSize,int page,Object ...objects);
+	
+	public User check(String username);
+	
+	boolean deleteUser(User user);
 }

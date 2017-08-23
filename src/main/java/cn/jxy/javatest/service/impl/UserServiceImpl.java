@@ -45,15 +45,15 @@ public class UserServiceImpl extends BaseDao<User, Serializable> implements IUse
 	 */
 	@Override
 	public boolean add(User user) {
-		// TODO Auto-generated method stub
-		return false;
+		this.insertEntity(user);
+		return true;
 	}
 
 	/* (non-Javadoc)
 	 * @see cn.jxy.javatest.service.IUserService#delete(int)
 	 */
 	@Override
-	public boolean delete(User user) {
+	public boolean delete(int userId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -63,8 +63,8 @@ public class UserServiceImpl extends BaseDao<User, Serializable> implements IUse
 	 */
 	@Override
 	public boolean update(User user) {
-		// TODO Auto-generated method stub
-		return false;
+		this.updateEntity(user);
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -83,6 +83,19 @@ public class UserServiceImpl extends BaseDao<User, Serializable> implements IUse
 	public PageCut<User> getPage(int pageSize, int page, Object... objects) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public User check(String username) {
+		
+		return userDao.check(username);
+	}
+
+
+	@Override
+	public boolean deleteUser(User user) {
+		userDao.deleteUser(user);
+		return true;
 	}
 
 }
