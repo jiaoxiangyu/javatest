@@ -46,7 +46,7 @@
 		<div class="answer">
 			<h3>你的答案</h3><h4></h4>
 			<p>
-				<span>温馨提示：</span>公共类类名为题目名称;不能导入package;编译语言为<em>JAVA</em>！
+				<span>温馨提示：</span>编译语言为<em>Java</em>；公共类类名为<em>Main</em>；不能导入package！
 			</p>
 			<span>你的代码：</span>
 			<form action="${rootPath}front/toSubmit?qtId=${question.typeId}"

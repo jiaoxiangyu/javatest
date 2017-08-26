@@ -56,19 +56,12 @@ public class DateSwitch extends Date{
 	      * 
 	      * @return date
 	      */
-	     public static Date dateToDate(Date date) {	    	  
-	    	   SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	    	   String dateString = formatter.format(date);
-	    	   System.out.println(dateString);	    	 
-	    	   Date date_2=null;
-				try {
-					date_2 = formatter.parse(dateString);
-				} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				}
-	    	   return date_2;
+	     public static String TimeToStr(Date date) {	    	  
+	    	   SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	    	   String dateString = formatter.format(date);	    	   
+	    	   return dateString;
 	    }
+	     
 	    @Override
 	    public String toString() {
 	    	 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");	    	 
@@ -81,10 +74,10 @@ public class DateSwitch extends Date{
 	    /**
 		 * 
 		 */
-		/*public static void main(String[] args) {
-			System.out.println(new Date());
-			System.out.println(new DateSwitch().toString());
-		}*/
+		public static void main(String[] args) {
+			
+			System.out.println(DateSwitch.TimeToStr(new Date()));
+		}
 			
 		
 	     

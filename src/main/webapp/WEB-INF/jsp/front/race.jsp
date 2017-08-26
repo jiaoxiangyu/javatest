@@ -14,12 +14,12 @@
 	<div class="cont">
 		<table class="table table-striped table-hover " >	
 			 <caption>算法竞赛</caption>	
-			 <thead>
-			    <tr>
+			 <thead >
+			    <tr >
 			      <th>竞赛编号</th>
 			      <th>竞赛名称</th>
-			      <th>开始时间</th>
-			      <th>结束时间</th>
+			      <th class="t_head">开 始 时 间</th>
+			      <th class="t_head">结 束 时 间</th>
 			      <th>竞赛状态</th>
 			      <th>得分</th>			      
 			      <th>竞赛详情</th>

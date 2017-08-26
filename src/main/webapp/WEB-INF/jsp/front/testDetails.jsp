@@ -56,10 +56,7 @@
 					<textarea   cols="100" rows="20" wrap="off" id="c2" disabled="disabled"
 						onblur="check('2')" onKeyUp="keyUp()" onFocus="clearValue('2')"
 						onscroll="G('li').scrollTop=this.scrollTop;"
-						oncontextmenu="return false" class="grey">
-						
-						
-${response.answer }</textarea>
+						oncontextmenu="return false" class="grey">${response.answer }</textarea>
 				</td>
 			</tr>
 		</table>

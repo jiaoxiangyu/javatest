@@ -69,10 +69,7 @@ public class IndexController extends BaseController{
 	 */
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	public String login(User user,String code,String remember,HttpServletResponse response,HttpSession session,ModelMap model){
-		System.out.println("remember="+remember);		
 		String checkcCode=(String)session.getAttribute("checkcode");
-		System.out.println("checkcCode"+checkcCode);
-		System.out.println("code"+code);
 		if(checkcCode.equals(code)){
 			/*user.setUsername("12345678910");
 			user.setPassword("password");*/
@@ -83,7 +80,6 @@ public class IndexController extends BaseController{
 			if(user!=null){
 				//记住密码
 				if(remember!=null && remember.equals("on")){
-					System.out.println("记住密码");
 					Cookie username=new Cookie("username",user.getUsername());
 					Cookie password=new Cookie("password",user.getPassword());
 					// 设置cookie过期时间为24小时。

@@ -31,7 +31,7 @@
 	margin-bottom: 30px;
 	line-height: 3;
 	white-space:pre-wrap;
-	
+	width: 900px;
 }
 
 .answer{
@@ -45,6 +45,7 @@
 .answer p {	
 	background-color:#e8e8e8;
 	letter-spacing:1.5px;
+	width: 900px;
 }
 .answer p span{
 	color:green;
@@ -112,7 +113,7 @@ textarea{
 	font-family:Arial, Helvetica, sans-serif;
 	height:500px;
 	margin:0px;
-	width:850px;
+	width:900px;
 	padding:0 0 0 35px;
 	overflow-x: hidden;
 	line-height:20px;

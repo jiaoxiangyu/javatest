@@ -1,7 +1,7 @@
 cn\jxy\javatest\dao\RaceMapper.class
+cn\jxy\javatest\util\MyClassLoader.class
 cn\jxy\javatest\entity\TestDetails.class
 cn\jxy\javatest\util\SendEmail.class
-cn\jxy\javatest\test\username\字符串对比.class
 cn\jxy\javatest\entity\RaceDetails.class
 cn\jxy\javatest\util\JavaTest.class
 cn\jxy\javatest\dao\UserMapper.class
@@ -13,6 +13,7 @@ cn\jxy\javatest\service\IQuestionService.class
 cn\jxy\javatest\service\IResponseService.class
 cn\jxy\javatest\service\IRaceService.class
 cn\jxy\javatest\listener\AppStartListener.class
+cn\jxy\javatest\util\StringUtil.class
 cn\jxy\javatest\entity\Race.class
 cn\jxy\javatest\base\BaseDao.class
 cn\jxy\javatest\dao\TypeMapper.class

@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,22 +22,22 @@ import cn.jxy.javatest.entity.TestDetails;
  */
 public class JavaTest {
 	private Class clazz;//测试文件的class
-	private String name;//测试题目名称
-	private String rootPath;//项目根目录绝对路径
-	private String testFilePath;//webapp的绝对路径
+	private String name;//测试题目名称	
+	private String testFilePath;//testFile的绝对路径
+	private String javaFilePath;//javaFile的绝对路径
 	private String username;//用户名
 	
 	public JavaTest() {
 		super();
 	}
 
-	public JavaTest(Class clazz,String rootPath,String username) {
+	public JavaTest(Class clazz,String rootPath,String username,String qtName) {
 		super();
 		this.clazz = clazz;
-		this.rootPath=rootPath;
-		this.testFilePath=rootPath+"\\src\\main\\webapp\\uploadFile\\testFile\\";		
+		this.testFilePath=rootPath+StringUtil.generateUri("uploadFile","testFile");	
+		this.javaFilePath=rootPath+StringUtil.generateUri("uploadFile","JavaFile");	
 		this.username=username;
-		name=clazz.getSimpleName();		
+		name=qtName;
 	}
 
 	
@@ -62,8 +61,8 @@ public class JavaTest {
 	//读取用户输出答案
 	public String reader() throws IOException{
 		char[] c=new char[1024];
-		
-		FileReader fr=new FileReader(rootPath+"\\src\\main\\java\\cn\\jxy\\javatest\\test\\"+username+"\\myanswer.txt");
+		//"\\src\\main\\java\\cn\\jxy\\javatest\\test\\"
+		FileReader fr=new FileReader(javaFilePath+File.separator+username+File.separator+"myanswer.txt");
 		int len=fr.read(c);		
 		return new String(c,0,len);
 	}
@@ -105,8 +104,8 @@ public class JavaTest {
 				//标准输入重定向
 				FileInputStream fin=new FileInputStream(testFilePath+name+"-"+"input"+"-"+i+".txt");
 				System.setIn(fin);
-				//标准输出重定向
-				File file=new File(rootPath+"\\src\\main\\java\\cn\\jxy\\javatest\\test\\"+username+"\\myanswer.txt");
+				//标准输出重定向				
+				File file=new File(javaFilePath+File.separator+username+File.separator+"myanswer.txt");
 				PrintStream fout=new PrintStream(file);
 				PrintStream out = System.out;				
 				System.setOut(fout);
@@ -121,8 +120,8 @@ public class JavaTest {
 				fout.close();							
 				System.setOut(out);
 				//**时间和内存
-				testDetails.setTime((new Long(new Date().getTime()-startTime)).intValue());				
-				testDetails.setMemory((new Long(memory-Runtime.getRuntime().freeMemory() / 1024 / 1024)).intValue());
+				testDetails.setTime((new Long(new Date().getTime()-startTime)).intValue()+20);				
+				testDetails.setMemory((new Long(memory-Runtime.getRuntime().freeMemory() / 1024 / 1024)).intValue()+20);
 				
 				String answer1=reader();
 				String answer2=output(i);
@@ -152,9 +151,10 @@ public class JavaTest {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		List<TestDetails> testDetails=new ArrayList<TestDetails>();
- 		JavaTest t=new JavaTest(Class.forName("cn.jxy.javatest.test.username.字符串对比"), "G:\\workspace\\javatest","user");
- 		System.out.println(t.compare(testDetails));
+		/*List<TestDetails> testDetails=new ArrayList<TestDetails>();		
+		Class<?> clazz=Class.forName("Main", true, new MyClassLoader("username"));  
+ 		JavaTest t=new JavaTest(clazz, "G:\\workspace\\javatest\\src\\main\\webapp\\","username","字符串对比");
+ 		System.out.println(t.compare(testDetails));*/
  		
  		
  		

@@ -14,7 +14,7 @@
 
 .uli{	
 	
-	
+	width:900px;
 }
 .uli ul{
 	padding-top:5px;
@@ -33,6 +33,7 @@
 
 .tests{
 	padding-top: 30px;
+	width:900px;
 }
 
 .tests pre{
@@ -42,6 +43,7 @@
 	color:red;
 	font-size: 16px;
 	white-space:pre-wrap;
+	width:900px;
 }
 
 /*以下都是行号样式*/
@@ -52,7 +54,7 @@
 textarea{
 	border:1px solid #7f9db9;
 	font-size:9pt;
-	width:900px;
+	width:800px;
 	color:#000;
 	resize:none;
 } 
@@ -92,7 +94,7 @@ textarea{
 	font-family:Arial, Helvetica, sans-serif;
 	height:500px;
 	margin:0px;
-	width:920px;
+	width:900px;
 	padding:0 0 0 35px;
 	overflow-x: hidden;
 	line-height:20px;

@@ -6,7 +6,11 @@ import java.io.FileWriter;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +37,9 @@ import cn.jxy.javatest.entity.Type;
 import cn.jxy.javatest.entity.User;
 import cn.jxy.javatest.util.DateSwitch;
 import cn.jxy.javatest.util.JavaTest;
+import cn.jxy.javatest.util.MyClassLoader;
 import cn.jxy.javatest.util.PageCut;
+import cn.jxy.javatest.util.StringUtil;
 
 /**
  * @author: 焦
@@ -146,11 +152,15 @@ public class FrontController extends BaseController{
 		 * 生成Response类,并先存入数据库
 		 */
 		Response response=new Response(question.getId(), question.getName(), user.getId(), user.getUsername(), question.getTypeId(), question.getType(), "已打开", new DateSwitch().toString());
+		//判断该题是否是比赛中的试题
 		int raceId=(int)session.getAttribute("raceId");
-		if(raceId!=0){
+		if(raceId!=0){			
 			Race race=raceService.get(raceId);
-			response.setRaceId(raceId);
-			response.setRaceName(race.getName());
+			Date endTime=DateSwitch.StrToDateTime(race.getEndDate());
+			if(endTime.after(new Date())){
+				response.setRaceId(raceId);
+				response.setRaceName(race.getName());
+			}			
 		}
 		boolean resadd=responseService.add(response);
 		if(resadd==true){
@@ -163,19 +173,20 @@ public class FrontController extends BaseController{
 		 * 先创建要测试程序的java文件
 		 */
 		answer=new String(answer.getBytes("ISO-8859-1"),"UTF-8");
-		String rootpath=request.getSession().getServletContext().getRealPath("/");
-		rootpath=rootpath.substring(0,rootpath.length()-17);
+		String rootpath=request.getSession().getServletContext().getRealPath(File.separator);
+		//rootpath=rootpath.substring(0,rootpath.length()-17);
 		
 		//java文件存放路径
-		File folder=new File(rootpath+"\\src\\main\\java\\cn\\jxy\\javatest\\test\\"+user.getUsername());
+		//  javatest/src/main/webapp/uploadFile/JavaFile/用户名
+		File folder=new File(rootpath+StringUtil.generateUri("uploadFile","JavaFile")+user.getUsername());
 		if(!folder.exists()){
 			folder.mkdir();
 		}
 	
 		//生成java文件
-		File javaFile=new File(folder.getPath()+"\\"+question.getName()+".java"); 		
+		File javaFile=new File(folder.getPath()+File.separator+"Main.java"); 		
 		FileWriter fout=new FileWriter(javaFile);
-		fout.write("package cn.jxy.javatest.test."+user.getUsername()+";"+"\r\n");
+		//fout.write("package cn.jxy.javatest.test."+user.getUsername()+";"+"\r\n");
 		fout.write(answer);
  		fout.close();
  		
@@ -183,16 +194,16 @@ public class FrontController extends BaseController{
  		 *  把java文件编译为class文件			 		
  		 */
  		//标准错误输出重定向,把编译class的错误信息输入到文件		
-		File file=new File(rootpath+"\\src\\main\\java\\cn\\jxy\\javatest\\test\\"+user.getUsername()+"\\err.txt");
+ 		//  javatest/src/main/webapp/uploadFile/JavaFile/用户名/err.txt
+		File file=new File(rootpath+StringUtil.generateUri("uploadFile","JavaFile")+user.getUsername()+File.separator+"err.txt");
 		PrintStream foutErr=new PrintStream(file);
 		PrintStream errOut = System.err;
 		System.setErr(foutErr);
 				
 		//java文件编译为class文件
  		JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
- 		/*int result = javaCompiler.run(null, null, null, "-d", classPath, javaFile.getPath());*/		
+ 		//int result = javaCompiler.run(null, null, null, "-d", classPath, javaFile.getPath());
  		int result=javaCompiler.run(null, null, null, javaFile.getPath()); 
- 		
  		//关闭错误输出流和重定向错误输出为标准错误输出
  		foutErr.close();
  		System.setErr(errOut);
@@ -226,7 +237,8 @@ public class FrontController extends BaseController{
  		 * 开始运行测试程序进行测试
  		 */
  		List<TestDetails> testDetailss=new ArrayList<TestDetails>();
- 		JavaTest t=new JavaTest(Class.forName("cn.jxy.javatest.test."+user.getUsername()+"."+question.getName()), rootpath,user.getUsername());
+ 		Class<?> clazz=Class.forName("Main", true, new MyClassLoader(rootpath,user.getUsername()));  
+ 		JavaTest t=new JavaTest(clazz, rootpath,user.getUsername(),question.getName());
  		testDetailss= t.compare(testDetailss);
  		/**
  		 * 处理测试结果
@@ -312,12 +324,12 @@ public class FrontController extends BaseController{
 	public void download(HttpServletRequest request,HttpServletResponse response,ModelMap model,String temp,int qtId,int orderId)
 	throws Exception{
 		Question question=questionService.get(qtId);		
-		String rootPath=request.getSession().getServletContext().getRealPath("/");
+		String rootPath=request.getSession().getServletContext().getRealPath(File.separator);
 		String filePath="";
 		if(temp.equals("in")){
-			filePath=rootPath+"uploadFile\\testFile\\"+question.getName()+"-input-"+orderId+".txt";
+			filePath=rootPath+StringUtil.generateUri("uploadFile","testFile")+question.getName()+"-input-"+orderId+".txt";
 		}else if(temp.equals("out")){
-			filePath=rootPath+"uploadFile\\testFile\\"+question.getName()+"-output-"+orderId+".txt";
+			filePath=rootPath+StringUtil.generateUri("uploadFile","testFile")+question.getName()+"-output-"+orderId+".txt";
 		}
 		File file=new File(filePath);
 		FileReader fReader=new FileReader(file);
@@ -386,12 +398,20 @@ public class FrontController extends BaseController{
 	public String raceDetails(HttpSession session,ModelMap model,int raceId){
 		int userId=((User)session.getAttribute("user")).getId();
 		List<RaceDetails> raceDetailss=raceDetailsService.getByRaceId(raceId);
+		System.out.println(raceDetailss);
 		if(raceDetailss.size()>0){
 			for(RaceDetails r:raceDetailss){
-				Response res=responseService.getByUserRaceQt(userId, raceId, r.getQtId());
-				r.setStatus(res.getStatus());
-				r.setScore(res.getScore());
-				r.setWriteTime(res.getWriteDate());
+				Response res=responseService.getByUserRaceQt(userId, raceId, r.getQtId());				
+				if(res==null){
+					r.setStatus("未打开");
+					r.setScore(0);
+					r.setWriteTime("00-00-00");
+				}else{
+					r.setStatus(res.getStatus());
+					r.setScore(res.getScore());
+					r.setWriteTime(res.getWriteDate());
+				}
+				
 			}
 			model.addAttribute("raceDetailss",raceDetailss);			
 		}else{
