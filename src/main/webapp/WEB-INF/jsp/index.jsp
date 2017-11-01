@@ -39,7 +39,7 @@
 							<span class="input-group-addon">验证码 </span>
 							<input type="text" class="form-control" name="code">
 							<span class="input-group-addon code">
-							<img alt="换一张" src="${rootPath}/index/code" id="validateCodeImg" onclick="changeImg()">
+							<img alt="换一张" src="${rootPath}index/code" id="validateCodeImg" onclick="changeImg()">
 							</span>
 						</div><br>
 						<div class="remember">
